@@ -1,5 +1,5 @@
-import { RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
+import { RequestHandler } from 'express';
 
 const checkAuth: RequestHandler = (req, res, next) => {
   try {
