@@ -20,14 +20,10 @@ export const userSignUp: RequestHandler = async (req, res) => {
           password: hash
         });
         try {
-          const result = await user.save();
+          const { _id, email, password } = await user.save();
           const response = {
             message: 'User created',
-            user: {
-              _id: result._id,
-              email: result.email,
-              password: result.password
-            }
+            user: { _id, email, password }
           };
           res.status(201).json(response);
         } catch (error) {
