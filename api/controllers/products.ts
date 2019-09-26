@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
 import { RequestHandler } from 'express';
+import mongoose from 'mongoose';
 
 import Product from '../models/product';
 

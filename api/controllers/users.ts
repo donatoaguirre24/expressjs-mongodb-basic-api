@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
+import { RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
-import { RequestHandler } from 'express';
 
 import User from '../models/user';
 
