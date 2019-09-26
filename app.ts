@@ -1,6 +1,6 @@
+import 'dotenv/config';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import 'dotenv/config';
 import express from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
@@ -14,10 +14,10 @@ import usersRoutes from './api/routes/users';
 const app = express();
 
 //Connect to MongoDB altas
-mongoose.connect(
-  `mongodb+srv://admin:${process.env.MONGO_PW}@rest-shop-api-ydzam.mongodb.net/test?retryWrites=true&w=majority`,
-  { useNewUrlParser: true }
-);
+const uri = `mongodb+srv://admin:${process.env.MONGO_PW}@rest-shop-api-ydzam.mongodb.net/test?retryWrites=true&w=majority`;
+mongoose.set('useCreateIndex', true);
+mongoose.set('useUnifiedTopology', true);
+mongoose.connect(uri, { useNewUrlParser: true });
 
 //Middlewares
 app.use(morgan('dev'));

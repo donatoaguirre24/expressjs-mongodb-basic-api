@@ -17,6 +17,11 @@
     "sourceType": "module",
     "ecmaVersion": 2018
   },
+  "settings": {
+    "node": {
+      "tryExtensions": [".ts", ".js", ".json", ".node"]
+    }
+  },
   "rules": {
     "node/no-unsupported-features/es-syntax": "off",
     "@typescript-eslint/explicit-member-accessibility": 0,

@@ -6,7 +6,7 @@ import {
   ordersGetOne,
   ordersPost
 } from '../controllers/orders';
-import checkAuth from '../middleware/check-auth';
+import checkAuth from '../middleware/checkAuth';
 
 const router = express.Router();
 

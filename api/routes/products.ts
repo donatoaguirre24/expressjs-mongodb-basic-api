@@ -8,7 +8,7 @@ import {
   productsPatch,
   productsPost
 } from '../controllers/products';
-import checkAuth from '../middleware/check-auth';
+import checkAuth from '../middleware/checkAuth';
 
 const router = express.Router();
 
