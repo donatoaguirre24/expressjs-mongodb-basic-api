@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 const checkAuth: RequestHandler = (req, res, next) => {
   try {
     const authorization = req.headers.authorization;
-    const token = authorization ? authorization.split(' ')[1] : '';
+    const token = authorization || '';
     jwt.verify(token, 'secret');
     next();
   } catch (error) {

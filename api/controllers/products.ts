@@ -8,16 +8,16 @@ export const productsGetAll: RequestHandler = async (_req, res) => {
     const result = await Product.find().exec();
     const response = {
       count: result.length,
-      products: result.map((product) => ({
-        _id: product._id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
+      products: result.map(({ _id, name, price, image }) => ({
+        _id,
+        name,
+        price,
+        image,
         request: {
           type: 'GET',
-          url: `http://localhost:8080/products/${product._id}`
-        }
-      }))
+          url: `http://localhost:8080/products/${_id}`,
+        },
+      })),
     };
     res.status(200).json(response);
   } catch (error) {
@@ -30,22 +30,18 @@ export const productsPost: RequestHandler = async (req, res) => {
     _id: new mongoose.Types.ObjectId(),
     name: req.body.name,
     price: req.body.price,
-    image: `http://localhost:8080/${req.file.path}`
+    image: `http://localhost:8080/${req.file.path}`,
   });
+
   try {
-    const result = await product.save();
+    const { _id, name, price, image } = await product.save();
     const response = {
       message: 'Product created',
-      product: {
-        _id: result._id,
-        name: result.name,
-        price: result.price,
-        image: result.image
-      },
+      product: { _id, name, price, image },
       request: {
         type: 'GET',
-        url: `http://localhost:8080/products/${result._id}`
-      }
+        url: `http://localhost:8080/products/${_id}`,
+      },
     };
     res.status(201).json(response);
   } catch (error) {
@@ -55,6 +51,7 @@ export const productsPost: RequestHandler = async (req, res) => {
 
 export const productsGetOne: RequestHandler = async (req, res) => {
   const id = req.params.productId;
+
   try {
     const result = await Product.findById(id)
       .select('_id name price image')
@@ -71,18 +68,16 @@ export const productsGetOne: RequestHandler = async (req, res) => {
 
 export const productsPatch: RequestHandler = async (req, res) => {
   const id = req.params.productId;
-  const update: any = {};
-  Object.keys(req.body).map((field) => {
-    update[field] = req.body[field];
-  });
+  const updateFields: any = { ...req.body };
+
   try {
-    await Product.update({ _id: id }, { $set: update }).exec();
+    await Product.update({ _id: id }, { $set: updateFields }).exec();
     res.status(200).json({
       message: 'Product updated',
       request: {
         type: 'GET',
-        url: `http://localhost:8080/products/${id}`
-      }
+        url: `http://localhost:8080/products/${id}`,
+      },
     });
   } catch (error) {
     res.status(500).json(error);

@@ -7,6 +7,7 @@ import User from '../models/user';
 
 export const userSignUp: RequestHandler = async (req, res) => {
   const user = await User.findOne({ email: req.body.email }).exec();
+
   if (user) {
     res.status(422).json({ message: 'The provided email already exists' });
   } else {
@@ -17,13 +18,14 @@ export const userSignUp: RequestHandler = async (req, res) => {
         const user = new User({
           _id: new mongoose.Types.ObjectId(),
           email: req.body.email,
-          password: hash
+          password: hash,
         });
+
         try {
           const { _id, email, password } = await user.save();
           const response = {
             message: 'User created',
-            user: { _id, email, password }
+            user: { _id, email, password },
           };
           res.status(201).json(response);
         } catch (error) {
@@ -49,7 +51,10 @@ export const userLogin: RequestHandler = async (req, res) => {
           'secret',
           { expiresIn: '1h' }
         );
-        res.status(200).json({ message: 'Auth successful', token });
+        res
+          .status(204)
+          .set({ 'access-token': token, 'token-type': 'Bearer' })
+          .send();
       } else {
         res.status(401).json({ message: 'Auth failed' });
       }

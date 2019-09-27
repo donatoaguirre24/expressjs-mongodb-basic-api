@@ -4,7 +4,7 @@ import {
   ordersDelete,
   ordersGetAll,
   ordersGetOne,
-  ordersPost
+  ordersPost,
 } from '../controllers/orders';
 import checkAuth from '../middleware/checkAuth';
 

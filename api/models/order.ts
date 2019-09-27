@@ -8,7 +8,7 @@ interface OrderModel extends Document {
 const OrderSchema: Schema = new Schema({
   _id: Schema.Types.ObjectId,
   product: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
-  quantity: { type: Number, required: true }
+  quantity: { type: Number, required: true },
 });
 
 const Order: Model<OrderModel> = model('Order', OrderSchema);

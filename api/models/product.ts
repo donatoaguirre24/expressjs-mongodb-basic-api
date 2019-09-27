@@ -10,7 +10,7 @@ const ProductSchema: Schema = new Schema({
   _id: Schema.Types.ObjectId,
   name: { type: String, required: true },
   price: { type: Number, required: true },
-  image: { type: String, required: false }
+  image: { type: String, required: false },
 });
 
 const Product: Model<ProductModel> = model('Product', ProductSchema);

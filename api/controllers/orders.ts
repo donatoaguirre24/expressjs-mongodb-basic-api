@@ -4,20 +4,20 @@ import mongoose from 'mongoose';
 import Order from '../models/order';
 import Product from '../models/product';
 
-export const ordersGetAll: RequestHandler = async (req, res) => {
+export const ordersGetAll: RequestHandler = async (_req, res) => {
   try {
     const result = await Order.find().exec();
     const response = {
       count: result.length,
-      orders: result.map((order) => ({
-        _id: order._id,
-        product: order.product,
-        quantity: order.quantity,
+      orders: result.map(({ _id, product, quantity }) => ({
+        _id,
+        product,
+        quantity,
         request: {
           type: 'GET',
-          url: `http://localhost:8080/orders/${order._id}`
-        }
-      }))
+          url: `http://localhost:8080/orders/${_id}`,
+        },
+      })),
     };
     res.status(200).json(response);
   } catch (error) {
@@ -34,20 +34,16 @@ export const ordersPost: RequestHandler = async (req, res) => {
       const order = new Order({
         _id: new mongoose.Types.ObjectId(),
         product: req.body.productId,
-        quantity: req.body.quantity
+        quantity: req.body.quantity,
       });
-      const result = await order.save();
+      const { _id, product, quantity } = await order.save();
       const response = {
         message: 'Order created',
-        order: {
-          _id: result._id,
-          product: result.product,
-          quantity: result.quantity
-        },
+        order: { _id, product, quantity },
         request: {
           type: 'GET',
-          url: `http://localhost:8080/orders/${result._id}`
-        }
+          url: `http://localhost:8080/orders/${_id}`,
+        },
       };
       res.status(201).json(response);
     }

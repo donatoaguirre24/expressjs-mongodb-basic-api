@@ -6,7 +6,7 @@ import {
   productsGetAll,
   productsGetOne,
   productsPatch,
-  productsPost
+  productsPost,
 } from '../controllers/products';
 import checkAuth from '../middleware/checkAuth';
 
@@ -18,12 +18,12 @@ const storage = multer.diskStorage({
   },
   filename: (_req, file, cb) => {
     cb(null, file.originalname);
-  }
+  },
 });
 
 const upload = multer({
   storage,
-  limits: { fileSize: 1024 * 1024 * 5 }
+  limits: { fileSize: 1024 * 1024 * 5 },
 });
 
 router.get('/', productsGetAll);
