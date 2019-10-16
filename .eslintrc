@@ -1,21 +1,22 @@
 {
   "env": {
     "es6": true,
-    "node": true,
-    "browser": true
+    "node": true
   },
   "extends": [
-    "eslint:recommended",
+    "airbnb",
     "plugin:node/recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier/@typescript-eslint",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:import/typescript"
   ],
   "plugins": [],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "sourceType": "module",
-    "ecmaVersion": 2018
+    "ecmaVersion": 2019,
+    "project": "./tsconfig.json"
   },
   "settings": {
     "node": {
@@ -23,10 +24,12 @@
     }
   },
   "rules": {
-    "node/no-unsupported-features/es-syntax": "off",
     "@typescript-eslint/explicit-member-accessibility": 0,
     "@typescript-eslint/explicit-function-return-type": 0,
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/indent": "off"
+    "@typescript-eslint/indent": "off",
+    "no-console": "warn",
+    "no-underscore-dangle": "off",
+    "class-methods-use-this": "off",
+    "node/no-unsupported-features/es-syntax": "off"
   }
 }

@@ -15,14 +15,14 @@ export const userSignUp: RequestHandler = async (req, res) => {
       if (err) {
         res.status(500).json(err);
       } else {
-        const user = new User({
+        const newUser = new User({
           _id: new mongoose.Types.ObjectId(),
           email: req.body.email,
           password: hash,
         });
 
         try {
-          const { _id, email, password } = await user.save();
+          const { _id, email, password } = await newUser.save();
           const response = {
             message: 'User created',
             user: { _id, email, password },
