@@ -5,8 +5,6 @@ import express from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 
-import errorHandler from './api/middleware/errorHandler';
-import notFoundHandler from './api/middleware/notFoundHandler';
 import ordersRoutes from './api/routes/orders';
 import productsRoutes from './api/routes/products';
 import usersRoutes from './api/routes/users';
@@ -30,9 +28,5 @@ app.use(cors());
 app.use('/orders', ordersRoutes);
 app.use('/products', productsRoutes);
 app.use('/users', usersRoutes);
-
-// Error handling
-app.use(notFoundHandler);
-app.use(errorHandler);
 
 export default app;

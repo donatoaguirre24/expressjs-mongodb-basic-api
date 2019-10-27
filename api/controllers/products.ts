@@ -67,16 +67,16 @@ export const productsGetOne: RequestHandler = async (req, res) => {
 };
 
 export const productsPatch: RequestHandler = async (req, res) => {
-  const id = req.params.productId;
-  const updateFields: any = { ...req.body };
+  const { productId } = req.params;
+  const updateFields: unknown = { ...req.body };
 
   try {
-    await Product.update({ _id: id }, { $set: updateFields }).exec();
+    await Product.update({ _id: productId }, { $set: updateFields }).exec();
     res.status(200).json({
       message: 'Product updated',
       request: {
         type: 'GET',
-        url: `http://localhost:8080/products/${id}`,
+        url: `http://localhost:8080/products/${productId}`,
       },
     });
   } catch (error) {
@@ -85,8 +85,10 @@ export const productsPatch: RequestHandler = async (req, res) => {
 };
 
 export const productsDelete: RequestHandler = async (req, res) => {
+  const { productId } = req.params;
+
   try {
-    await Product.remove({ _id: req.params.productId }).exec();
+    await Product.remove({ _id: productId }).exec();
     res.status(200).json({ message: 'Product deleted' });
   } catch (error) {
     res.status(500).json(error);
