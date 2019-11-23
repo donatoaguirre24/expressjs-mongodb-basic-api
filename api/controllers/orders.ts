@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import Order from '../models/order';
 import Product from '../models/product';
 
-export const ordersGetAll: RequestHandler = async (_req, res) => {
+export const ordersGetAll: RequestHandler = async (req, res) => {
   try {
     const result = await Order.find().exec();
     const response = {

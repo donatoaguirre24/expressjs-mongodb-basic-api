@@ -23,10 +23,12 @@ export const userSignUp: RequestHandler = async (req, res) => {
 
         try {
           const { _id, email, password } = await newUser.save();
+
           const response = {
             message: 'User created',
             user: { _id, email, password },
           };
+
           res.status(201).json(response);
         } catch (error) {
           res.status(500).json(error);
@@ -38,6 +40,7 @@ export const userSignUp: RequestHandler = async (req, res) => {
 
 export const userLogin: RequestHandler = async (req, res) => {
   const user = await User.findOne({ email: req.body.email }).exec();
+
   if (!user) {
     res.status(401).json({ message: 'Auth failed' });
   } else {
@@ -45,12 +48,14 @@ export const userLogin: RequestHandler = async (req, res) => {
       if (err) {
         res.status(500).json(err);
       }
+
       if (same) {
         const token = jwt.sign(
           { email: user.email, userId: user._id },
           'secret',
           { expiresIn: '1h' }
         );
+
         res
           .status(204)
           .set({ 'access-token': token, 'token-type': 'Bearer' })

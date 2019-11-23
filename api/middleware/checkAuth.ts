@@ -1,10 +1,9 @@
 import { RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 
-const checkAuth: RequestHandler = (req, res, next) => {
+const checkAuth: RequestHandler = ({ headers: { authorization } }, res, next) => {
   try {
-    const { authorization } = req.headers;
-    const token = authorization || '';
+    const token = authorization ?? '';
 
     jwt.verify(token, 'secret');
 
