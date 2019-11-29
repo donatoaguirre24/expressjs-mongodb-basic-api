@@ -1,5 +1,7 @@
 import { Document, model, Model, Schema } from 'mongoose';
 
+import { validateEmail } from '../utils/regex';
+
 interface UserModel extends Document {
   email: string;
   password: string;
@@ -11,7 +13,7 @@ const UserSchema: Schema = new Schema({
     type: String,
     required: true,
     unique: true,
-    match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
+    match: validateEmail,
   },
   password: { type: String, required: true },
 });

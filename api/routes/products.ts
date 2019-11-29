@@ -1,39 +1,26 @@
 import express from 'express';
-import multer from 'multer';
 
-import {
-  productsDelete,
-  productsGetAll,
-  productsGetOne,
-  productsPatch,
-  productsPost,
-} from '../controllers/products';
-import checkAuth from '../middleware/checkAuth';
+import authController from '../controllers/auth';
+import productsController from '../controllers/products';
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => {
-    cb(null, 'uploads/');
-  },
-  filename: (_req, file, cb) => {
-    cb(null, file.originalname);
-  },
-});
+router.post('/', authController.checkAuth, productsController.create);
 
-const upload = multer({
-  storage,
-  limits: { fileSize: 1024 * 1024 * 5 },
-});
+router.get('/', productsController.getAll);
 
-router.get('/', productsGetAll);
+router.get('/:productId', productsController.getOne);
 
-router.post('/', checkAuth, upload.single('image'), productsPost);
+router.patch(
+  '/:productId',
+  authController.checkAuth,
+  productsController.update
+);
 
-router.get('/:productId', productsGetOne);
-
-router.patch('/:productId', checkAuth, productsPatch);
-
-router.delete('/:productId', checkAuth, productsDelete);
+router.delete(
+  '/:productId',
+  authController.checkAuth,
+  productsController.destroy
+);
 
 export default router;

@@ -1,11 +1,11 @@
 import { RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 
-const checkAuth: RequestHandler = ({ headers: { authorization } }, res, next) => {
+const checkAuth: RequestHandler = ({ headers }, res, next) => {
   try {
-    const token = authorization ?? '';
+    const accessToken = headers.authorization ?? '';
 
-    jwt.verify(token, 'secret');
+    jwt.verify(accessToken, 'secret');
 
     next();
   } catch (error) {
@@ -13,4 +13,6 @@ const checkAuth: RequestHandler = ({ headers: { authorization } }, res, next) =>
   }
 };
 
-export default checkAuth;
+export default {
+  checkAuth,
+};

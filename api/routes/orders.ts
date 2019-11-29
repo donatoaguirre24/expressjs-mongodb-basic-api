@@ -1,21 +1,16 @@
 import express from 'express';
 
-import {
-  ordersDelete,
-  ordersGetAll,
-  ordersGetOne,
-  ordersPost,
-} from '../controllers/orders';
-import checkAuth from '../middleware/checkAuth';
+import authController from '../controllers/auth';
+import ordersController from '../controllers/orders';
 
 const router = express.Router();
 
-router.get('/', checkAuth, ordersGetAll);
+router.post('/', authController.checkAuth, ordersController.create);
 
-router.post('/', checkAuth, ordersPost);
+router.get('/', authController.checkAuth, ordersController.getAll);
 
-router.get('/:orderId', checkAuth, ordersGetOne);
+router.get('/:orderId', authController.checkAuth, ordersController.getOne);
 
-router.delete('/:productId', checkAuth, ordersDelete);
+router.delete('/:orderId', authController.checkAuth, ordersController.destroy);
 
 export default router;

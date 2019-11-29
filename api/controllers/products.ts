@@ -3,17 +3,41 @@ import mongoose from 'mongoose';
 
 import Product from '../models/product';
 
-export const productsGetAll: RequestHandler = async (req, res) => {
+const create: RequestHandler = async ({ body }, res) => {
+  const product = new Product({
+    _id: new mongoose.Types.ObjectId(),
+    name: body.name,
+    price: body.price,
+  });
+
+  try {
+    const { _id, name, price } = await product.save();
+
+    const response = {
+      message: 'Product created',
+      product: { _id, name, price },
+      request: {
+        type: 'GET',
+        url: `http://localhost:8080/products/${_id}`,
+      },
+    };
+
+    res.status(201).json(response);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+const getAll: RequestHandler = async (req, res) => {
   try {
     const result = await Product.find().exec();
 
     const response = {
       count: result.length,
-      products: result.map(({ _id, name, price, image }) => ({
+      products: result.map(({ _id, name, price }) => ({
         _id,
         name,
         price,
-        image,
         request: {
           type: 'GET',
           url: `http://localhost:8080/products/${_id}`,
@@ -27,37 +51,11 @@ export const productsGetAll: RequestHandler = async (req, res) => {
   }
 };
 
-export const productsPost: RequestHandler = async (req, res) => {
-  const product = new Product({
-    _id: new mongoose.Types.ObjectId(),
-    name: req.body.name,
-    price: req.body.price,
-    image: `http://localhost:8080/${req.file.path}`,
-  });
+const getOne: RequestHandler = async ({ params }, res) => {
+  const { productId } = params;
 
   try {
-    const { _id, name, price, image } = await product.save();
-
-    const response = {
-      message: 'Product created',
-      product: { _id, name, price, image },
-      request: {
-        type: 'GET',
-        url: `http://localhost:8080/products/${_id}`,
-      },
-    };
-
-    res.status(201).json(response);
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};
-
-export const productsGetOne: RequestHandler = async (req, res) => {
-  const id = req.params.productId;
-
-  try {
-    const result = await Product.findById(id)
+    const result = await Product.findById(productId)
       .select('_id name price image')
       .exec();
 
@@ -71,7 +69,7 @@ export const productsGetOne: RequestHandler = async (req, res) => {
   }
 };
 
-export const productsPatch: RequestHandler = async ({ body, params }, res) => {
+const update: RequestHandler = async ({ body, params }, res) => {
   const { productId } = params;
 
   try {
@@ -89,14 +87,20 @@ export const productsPatch: RequestHandler = async ({ body, params }, res) => {
   }
 };
 
-export const productsDelete: RequestHandler = async (req, res) => {
-  const { productId } = req.params;
-
+const destroy: RequestHandler = async ({ params }, res) => {
   try {
-    await Product.remove({ _id: productId }).exec();
+    await Product.remove({ _id: params.productId }).exec();
 
     res.status(200).json({ message: 'Product deleted' });
   } catch (error) {
     res.status(500).json(error);
   }
+};
+
+export default {
+  create,
+  getAll,
+  getOne,
+  update,
+  destroy,
 };

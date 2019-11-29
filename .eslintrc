@@ -4,7 +4,7 @@
     "node": true
   },
   "extends": [
-    "airbnb",
+    "airbnb-base",
     "plugin:node/recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier/@typescript-eslint",
@@ -27,6 +27,7 @@
     "@typescript-eslint/explicit-member-accessibility": 0,
     "@typescript-eslint/explicit-function-return-type": 0,
     "@typescript-eslint/indent": ["error", 2],
+    "import/prefer-default-export": 0,
     "no-console": "warn",
     "no-underscore-dangle": "off",
     "class-methods-use-this": "off",
